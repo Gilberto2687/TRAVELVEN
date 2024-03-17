@@ -196,6 +196,10 @@ function validarFechaVencimiento(fecha) {
 formularioPago.addEventListener('submit', function(event) {
   // Evitar el envío predeterminado del formulario
   event.preventDefault();
+  if (carrito.length === 0) {
+    alert('Tu carrito está vacío. Agrega productos antes de proceder al pago.');
+    return;
+  }
   const mail = document.getElementById('mail').value;
   const nombreApellido = document.getElementById('nombre-apellido').value;
   const numeroTarjeta = document.getElementById('numero-tarjeta').value;
