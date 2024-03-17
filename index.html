@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="./img/2308984.png" type="image/x-icon" />
+    <title>TRAVELVEN</title>
+
+    <!-- custom styles -->
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <h1 id="titulo">
+        <img src="./img/2308984.png" alt="Logo Travelven" class="logo">
+        <span>TRAVELVEN</span>
+        <img src="./img/2308984.png" alt="Logo Travelven" class="logo">
+      </h1>
+      <hr />
+      <h2 id="secundario">Bienvenido/a a la mejor Agencia de viajes de Argentina, gracias por elegirnos.</h2>
+      <h2 id="tres" class="hola">Para todos nuestros destinos tenemos dos opciones una aerea y una terrestre, las dos tienen una duracion de 7 dias y 5 noches y tienen incluido Hotel con desayuno y cena. Luego de efectuada la compra coordinaremos via mail las fechas de viaje. </h2>
+      <main>
+        <h2>Paquetes Disponibles:</h2>
+        <label for="ingreso">Buscador</label>
+        <input type="text" name="ingreso" id="ingreso" />
+        <button id="btnSearch" class="btn">Buscar</button>
+        <!-- Aca se pinta la card -->
+        <div id="contenedor">
+          <!-- contenido dinamico -->
+        </div>
+ 
+        <div class="card-container">
+          <!-- Aquí se insertarán dinámicamente las tarjetas -->
+        </div>
+        
+        <div id="mensaje-agregado" style="display: none;">PAQUETE AGREGADO</div>
+        
+        <div id="carrito">
+          <h2>Carrito</h2>
+          <ul id="lista-carrito"></ul>
+          <p id="total"></p>
+        </div>
+        
+        <div id="formulario-pago">
+          <h2>Formulario de Pago</h2>
+          <form>
+            <label for="mail">Mail</label>
+            <input type="text" id="mail" name="mail" required>
+            <label for="nombre">Nombre y Apellido</label>
+            <input type="text" id="nombre-apellido" name="nombre-apellido" required>
+            <label for="numero-tarjeta">Número de Tarjeta</label>
+            <input type="text" id="numero-tarjeta" name="numero-tarjeta" required>
+            <label for="fecha-vencimiento">Fecha de Vencimiento(MM/AA)</label>
+            <input type="text" id="fecha-vencimiento" name="fecha-vencimiento" required>
+            <label for="codigo-secreto">CVV</label>
+            <input type="text" id="codigo-secreto" name="codigo-secreto" required>
+            <button id="btnPagar" type="submit">Pagar</button>
+          </form>
+        </div>
+        <div id="mensaje-pago-exitoso" style="display: none;">
+          ¡Pago exitoso! Gracias por su compra.
+        </div>
+      </main>
+    </div>
+    <!-- custon js -->
+    <script src="./js/main.js"></script>
+  </body>
+</html>
