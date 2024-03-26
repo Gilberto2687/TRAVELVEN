@@ -7,6 +7,9 @@
     <link rel="shortcut icon" href="./img/2308984.png" type="image/x-icon" />
     <title>TRAVELVEN</title>
 
+
+    <!-- sweealert  css -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.min.css">
     <!-- custom styles -->
     <link rel="stylesheet" href="./css/style.css" />
   </head>
@@ -34,8 +37,6 @@
           <!-- Aquí se insertarán dinámicamente las tarjetas -->
         </div>
         
-        <div id="mensaje-agregado" style="display: none;">PAQUETE AGREGADO</div>
-        
         <div id="carrito">
           <h2>Carrito</h2>
           <ul id="lista-carrito"></ul>
@@ -58,12 +59,11 @@
             <button id="btnPagar" type="submit">Pagar</button>
           </form>
         </div>
-        <div id="mensaje-pago-exitoso" style="display: none;">
-          ¡Pago exitoso! Gracias por su compra.
-        </div>
       </main>
     </div>
-    <!-- custon js -->
+    <!-- sweealert  js -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
+    <!-- custom js -->
     <script src="./js/main.js"></script>
   </body>
 </html>

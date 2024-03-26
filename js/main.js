@@ -3,47 +3,38 @@ const btnSearch = document.querySelector("#btnSearch"),
 inputIngreso = document.querySelector("#ingreso"),
 contenedor = document.querySelector("#contenedor");
 
-const paquetes = [
-  { id: 1, destino: "cataratas de Iguazu", mes: "Febrero", transporte:"terrestre" , precio: 400 , img:"cataratas1.jpg", },
-          
-  { id: 2, destino: "cataratas de Iguazu", mes: "Febrero", transporte:"area" , precio: 600 , img:"cataratas2.webp",},
-  
-  { id: 3, destino: "Bariloche", mes: "Febrero", transporte:"terrestre" , precio: 500 , img:"bariloche1.jpg",},
-  
-  { id: 4, destino: "Bariloche", mes: "Febrero", transporte:"area" , precio: 700 , img:"Bariloche2.jpg",},
-  
-  { id: 5, destino: "Merlo, San Luis", mes: "Marzo", transporte:"terrestre" , precio: 300 , img:"merlo1.jpg", },
-  
-  { id: 6, destino: "Merlo, San Luis", mes: "Marzo", transporte:"area" , precio: 450 , img:"merlo2.jpg", },
-  
-  { id: 7, destino: "Mendoza", mes: "Marzo", transporte:"area" , precio: 470 , img:"mendoza1.jpg", },
+let paquetesDB=[];
 
-  { id: 8, destino: "Mendoza", mes: "Marzo", transporte:"area" , precio: 650 , img:"mendoza2.jpg", },
-
-  { id: 9, destino: "Brasil", mes: "Marzo", transporte:"Crucero" , precio: 1500 , img:"brasil.jpg", },
-];
+fetch('http://localhost:8080/db/db.json')
+.then(response=> response.json())
+.then(data=>{
+  console.log(data);
+  paquetesDB=data
+  console.log(paquetesDB);
+  renderPaquetes(paquetesDB)
+})
 
 //Funciones de búsqueda
 btnSearch.addEventListener("click", function() {
   const filtro = inputIngreso.value.trim().toLowerCase();
   if (filtro === "") {
       // Si el campo de búsqueda está vacío, mostrar todos los servicios nuevamente
-      crearHtml(paquetes);
+      renderPaquetes(paquetesDB);
   } else {
-      const paquetesFiltrados = filtrarPaquetes(paquetes, filtro);
+      const paquetesFiltrados = filtrarPaquetes(paquetesDB, filtro);
       if (paquetesFiltrados.length === 0) {
           // Si no se encontraron servicios que coincidan con el filtro, mostrar un mensaje de error
           contenedor.innerHTML = "No se encontraron resultados.";
       } else {
           // Mostrar los servicios filtrados
-          crearHtml(paquetesFiltrados);
+          renderPaquetes(paquetesFiltrados);
       }
   }
 });
 
 // Función para filtrar paquetes por mes y tipo de transporte
-function filtrarPaquetes(paquetes, filtro) {
-  return paquetes.filter(paquete => {
+function filtrarPaquetes(paquetesDB, filtro) {
+  return paquetesDB.filter(paquete => {
     // Filtrar por mes
     if (paquete.mes.toLowerCase() === filtro) {
       return true;
@@ -55,54 +46,44 @@ function filtrarPaquetes(paquetes, filtro) {
     return false;
   });
 }
-
-// Función para crear estructura html
-function crearHtml(arr) {
-  const cardContainer = document.querySelector('.card-container');
+const renderPaquetes = (arr) => {
+  const cardContainer = document.querySelector("#contenedor"); // Obtener el contenedor de las tarjetas
   cardContainer.innerHTML = ""; // Limpiar el contenedor antes de agregar las tarjetas
-  //validar qué pasa cuando no recibo ningun array
-  if (arr.length === 0) {
-    console.log("El array está vacío.");
-    return;
-  }
-
   for (const el of arr) {
-    const {img, destino, precio, id, transporte, mes}= el
-    const html = `<div class="card">
-            <img src=" ./img/${img}" alt="${destino}">
-            <hr>
-            <h3>${destino}</h3>
-            <h3>${transporte}</h3>
-            <h3>${mes}</h3>
-            <h3>Precio: $${precio} </h3>
-            <div class="card-action">
-              <button class="btn btn-success" id="${id}">Agregar</button>
-            </div>
-          </div>`;
-    //se la agrego al contenedor
-    cardContainer.innerHTML += html;
+    const {img, destino, precio, id, transporte, mes}= el;
+    const cardHTML = `<div class="card">
+      <img src="./img/${img}" alt="${destino}">
+      <hr>
+      <h3>${destino}</h3>
+      <h3>${transporte}</h3>
+      <h3>${mes}</h3>
+      <h3>Precio: $${precio} </h3>
+      <div class="card-action">
+        <button class="btn btn-success" id="${id}">Agregar</button>
+      </div>
+    </div>`;
+    // Agregar el html de la tarjeta al contenedor
+    cardContainer.innerHTML += cardHTML;
   }
-  const btnAgregar = document.querySelectorAll('.btn.btn-success');
-  btnAgregar.forEach(btn => {
-    btn.addEventListener('click', agregarAlCarrito);
-  }); 
-}
-crearHtml(paquetes)
+};
 
 const btnAgregar = document.querySelectorAll('.btn.btn-success');
+btnAgregar.forEach(btn => {
+  btn.addEventListener('click', agregarAlCarrito);
+});
+
 const listaCarrito = document.querySelector('#lista-carrito');
 const totalCarrito = document.querySelector('#total');
 let carrito = [];
 
 function mostrarMensajeAgregado(card) {
-  const mensajeAgregado = document.getElementById('mensaje-agregado');
-  card.insertAdjacentElement('afterend', mensajeAgregado);
-  mensajeAgregado.style.display = 'block';
-  
-  // Ocultar el mensaje después de unos segundos
-  setTimeout(function() {
-    mensajeAgregado.style.display = 'none';
-  }, 2000); 
+  Swal.fire({
+    title: "Paquete Agregado",
+    text: "Tu paquete ya esta cargado en el carrito",
+    icon: "success",
+    showConfirmButton: false,
+    timer: 2000 // Tiempo en milisegundos (2 segundos en este caso)
+  });
 }
 
 // Función para agregar paquete al carrito
@@ -145,7 +126,19 @@ function actualizarCarrito() {
 
   // Mostrar total del carrito
   totalCarrito.textContent = `Total: $${total.toFixed(2)}`;
+
+  // Guardar carrito en localStorage
+  localStorage.setItem('carrito', JSON.stringify(carrito));
 }
+
+// Agregar evento DOMContentLoaded al final del archivo
+document.addEventListener('DOMContentLoaded', function() {
+  // Cargar carrito desde localStorage si existe
+  if(localStorage.getItem('carrito')) {
+    carrito = JSON.parse(localStorage.getItem('carrito'));
+    actualizarCarrito();
+  }
+});
 
 // Agregar eventos de clic a los botones "Agregar al carrito"
 btnAgregar.forEach(btn => {
@@ -154,6 +147,24 @@ btnAgregar.forEach(btn => {
 
 const btnPagar = document.querySelector('#btnPagar');
 const formularioPago = document.querySelector('#formulario-pago form');
+// Función para mostrar mensaje de pago exitoso
+function mostrarMensajePagoExitoso() {
+  Swal.fire({
+    title: "Pago exitoso",
+    text: "Gracias por elegirnos",
+    icon: "success",
+    showConfirmButton: false,
+    timer: 3000 // Tiempo en milisegundos (3 segundos en este caso)
+  });
+}
+function verificarDatos() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      // Simular la verificación de datos (en este caso, simplemente resolvemos la promesa)
+      resolve();
+    }, 2000); // Esperar 2 segundos (2000 milisegundos)
+  });
+}
 
 // Manejar evento de clic en el botón de pagar
 document.getElementById('btnPagar').addEventListener('click', function() {
@@ -169,16 +180,18 @@ document.getElementById('btnPagar').addEventListener('click', function() {
   
   // Mostrar el formulario de pago
   document.getElementById('formulario-pago').style.display = 'block';
+
+  // Simular verificación de datos
+  verificarDatos()
+    .then(() => {
+      // Mostrar mensaje de pago exitoso después de verificar los datos
+    })
+    .catch(error => {
+      // Manejar errores si la verificación falla
+      console.error('Error al verificar datos:', error);
+    });
 });
-function mostrarMensajePagoExitoso() {
-  const mensajePagoExitoso = document.getElementById('mensaje-pago-exitoso');
-  mensajePagoExitoso.style.display = 'block';
-  
-  // Ocultar el mensaje después de unos segundos
-  setTimeout(function() {
-    mensajePagoExitoso.style.display = 'none';
-  }, 3000);
-}
+
 function validarNumeroTarjeta(numero) {
   return /^\d{16}$/.test(numero); // Comprueba que sean exactamente 16 dígitos
 }
@@ -196,34 +209,55 @@ function validarFechaVencimiento(fecha) {
 formularioPago.addEventListener('submit', function(event) {
   // Evitar el envío predeterminado del formulario
   event.preventDefault();
-  if (carrito.length === 0) {
-    alert('Tu carrito está vacío. Agrega productos antes de proceder al pago.');
-    return;
-  }
-  const mail = document.getElementById('mail').value;
-  const nombreApellido = document.getElementById('nombre-apellido').value;
-  const numeroTarjeta = document.getElementById('numero-tarjeta').value;
-  const fechaVencimiento = document.getElementById('fecha-vencimiento').value;
-  const codigoSecreto = document.getElementById('codigo-secreto').value;
-
-  if (!validarNumeroTarjeta(numeroTarjeta)) {
-    alert('Por favor, ingrese un número de tarjeta válido (16 dígitos).');
-    return;
-  }
-
-  if (!validarCVV(codigoSecreto)) {
-    alert('Por favor, ingrese un CVV válido (3 dígitos).');
-    return;
-  }
-
-  if (!validarFechaVencimiento(fechaVencimiento)) {
-    alert('Por favor, ingrese una fecha de vencimiento válida (MM/AA).');
-    return;
-  }
-  // Mostrar mensaje de pago exitoso
-  mostrarMensajePagoExitoso();
   
-  // Limpiar el carrito después del pago exitoso
-  carrito = [];
-  actualizarCarrito();
+  // Obtener los datos del formulario
+  const formData = new FormData(formularioPago);
+  
+  // Enviar los datos al servidor utilizando Fetch
+  fetch('url_del_servidor', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => {
+    // Verificar si la solicitud fue exitosa
+    if (response.ok) {
+      // Mostrar mensaje de pago exitoso
+      mostrarMensajePagoExitoso();
+      
+      // Limpiar el carrito después del pago exitoso
+      carrito = [];
+      actualizarCarrito();
+    } else {
+      // Si la respuesta no fue exitosa, lanzar un error
+      throw new Error('Hubo un problema al procesar la solicitud.');
+    }
+  })
+  .catch(error => {
+    // Manejar errores de la solicitud
+    console.error('Error al procesar la solicitud:', error);
+    // Mostrar un mensaje de error al usuario
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Hubo un problema al procesar tu solicitud. Por favor, inténtalo de nuevo más tarde.",
+    });
+  });
 });
+document.addEventListener('DOMContentLoaded', function() {
+  getData(API_URL);
+})
+//async await
+const API_URL = "./db/db.json";
+document.addEventListener('DOMContentLoaded', function() {
+  getData(API_URL);
+});
+const getData = async (url) => {
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    const paquetesDB = data; // Declarar paquetesDB dentro de getData
+    renderPaquetes(paquetesDB); // Pasar paquetesDB como argumento a renderPaquetes
+  } catch (error) {
+    console.error('Error al obtener los datos:', error);
+  }
+};

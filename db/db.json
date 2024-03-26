@@ -1,0 +1,74 @@
+[
+   {
+      "id":1,
+      "destino":"cataratas de Iguazu",
+      "mes":"Febrero",
+      "transporte":"terrestre",
+      "precio":400,
+      "img":"cataratas1.jpg"
+   },
+   {
+      "id":2,
+      "destino":"cataratas de Iguazu",
+      "mes":"Febrero",
+      "transporte":"area",
+      "precio":600,
+      "img":"cataratas2.webp"
+   },
+   {
+      "id":3,
+      "destino":"Bariloche",
+      "mes":"Febrero",
+      "transporte":"terrestre",
+      "precio":500,
+      "img":"bariloche1.jpg"
+   },
+   {
+      "id":4,
+      "destino":"Bariloche",
+      "mes":"Febrero",
+      "transporte":"area",
+      "precio":700,
+      "img":"Bariloche2.jpg"
+   },
+   {
+      "id":5,
+      "destino":"Merlo, San Luis",
+      "mes":"Marzo",
+      "transporte":"terrestre",
+      "precio":300,
+      "img":"merlo1.jpg"
+   },
+   {
+      "id":6,
+      "destino":"Merlo, San Luis",
+      "mes":"Marzo",
+      "transporte":"area",
+      "precio":450,
+      "img":"merlo2.jpg"
+   },
+   {
+      "id":7,
+      "destino":"Mendoza",
+      "mes":"Marzo",
+      "transporte":"area",
+      "precio":470,
+      "img":"mendoza1.jpg"
+   },
+   {
+      "id":8,
+      "destino":"Mendoza",
+      "mes":"Marzo",
+      "transporte":"area",
+      "precio":650,
+      "img":"mendoza2.jpg"
+   },
+   {
+      "id":9,
+      "destino":"Brasil",
+      "mes":"Marzo",
+      "transporte":"Crucero",
+      "precio":1500,
+      "img":"brasil.jpg"
+   }
+]
