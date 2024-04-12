@@ -1,11 +1,10 @@
-
+const API_URL = "./db/db.json";
 const btnSearch = document.querySelector("#btnSearch"),
 inputIngreso = document.querySelector("#ingreso"),
 contenedor = document.querySelector("#contenedor");
 
 let paquetesDB=[];
-
-fetch('http://localhost:8080/db/db.json')
+fetch(API_URL)
 .then(response=> response.json())
 .then(data=>{
   console.log(data);
@@ -214,7 +213,7 @@ formularioPago.addEventListener('submit', function(event) {
   const formData = new FormData(formularioPago);
   
   // Enviar los datos al servidor utilizando Fetch
-  fetch('url_del_servidor', {
+  fetch(API_URL, {
     method: 'POST',
     body: formData
   })
@@ -247,13 +246,12 @@ document.addEventListener('DOMContentLoaded', function() {
   getData(API_URL);
 })
 //async await
-const API_URL = "./db/db.json";
 document.addEventListener('DOMContentLoaded', function() {
   getData(API_URL);
 });
-const getData = async (url) => {
+const getData = async (API_URL) => {
   try {
-    const response = await fetch(url);
+    const response = await fetch(API_URL);
     const data = await response.json();
     const paquetesDB = data; // Declarar paquetesDB dentro de getData
     renderPaquetes(paquetesDB); // Pasar paquetesDB como argumento a renderPaquetes

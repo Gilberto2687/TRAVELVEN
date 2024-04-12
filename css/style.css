@@ -96,14 +96,15 @@ img {
 
 .card-container {
   display: flex;
-  flex-wrap: wrap; 
-  gap: 20px; 
+  flex-wrap: wrap;
+  justify-content: space-around; 
 }
+
 .card {
   margin-top: 10px;
   background-color: pink;
   padding: 1.3rem;
-  width: 250px;
+  width: 250px; 
   height: 350px;
   border: 1px solid #777;
   border-radius: 5px;
